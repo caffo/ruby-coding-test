@@ -13,7 +13,7 @@ class AddScoreService
     return false unless valid?
 
     ActiveRecord::Base.transaction do
-      entry = Leaderboard.first.entries.find_or_create_by!(username: username)
+      entry = leaderboard.entries.find_or_create_by!(username: username)
       entry.update!(score: score.to_i + entry.score.to_i)
       LeaderboardEntryScore.create!(score: score, leaderboard_entry: entry)
     end
