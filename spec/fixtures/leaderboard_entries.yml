@@ -1,0 +1,13 @@
+renan:
+  username: 'Renan'
+  score: 9
+  leaderboard: my_leaderboard
+
+rodrigo:
+  username: 'Rodrigo'
+  score: 10
+  leaderboard: my_leaderboard
+
+paul:
+  username: 'Paul'
+  leaderboard: my_leaderboard
