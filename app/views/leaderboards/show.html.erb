@@ -29,6 +29,29 @@
   <% end -%>
 </div>
 
+<div>
+  <p>Scores:</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Score</th>
+        <th colspan="3"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @leaderboard_scores.each do |leaderboard_score| %>
+        <tr>
+          <td><%= leaderboard_score.entry.username %></td>
+          <td><%= leaderboard_score.score %></td>
+          <td><%= link_to 'Remove', leaderboard_entry_score_path(leaderboard_score), method: :delete %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
 <hr>
 
 <%= link_to 'Edit', edit_leaderboard_path(@leaderboard) %> |

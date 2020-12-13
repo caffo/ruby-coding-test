@@ -8,6 +8,7 @@ class LeaderboardsController < ApplicationController
 
   # GET /leaderboards/1
   def show
+    @leaderboard_scores = @leaderboard.leaderboard_entry_scores.includes(:entry)
   end
 
   # GET /leaderboards/new
