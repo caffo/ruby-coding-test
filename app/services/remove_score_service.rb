@@ -1,8 +1,4 @@
 class RemoveScoreService
-  include ActiveModel::Validations
-
-  validates :score, numericality: true
-
   def initialize(leaderboard_entry_score)
     @leaderboard_entry_score = leaderboard_entry_score
     @entry = leaderboard_entry_score.entry
