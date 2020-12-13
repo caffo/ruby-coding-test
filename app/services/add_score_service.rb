@@ -14,12 +14,16 @@ class AddScoreService
 
     ActiveRecord::Base.transaction do
       entry = leaderboard.entries.find_or_create_by!(username: username)
-      entry.update!(score: score.to_i + entry.score.to_i)
-      LeaderboardEntryScore.create!(score: score, leaderboard_entry: entry)
+      entry.update!(score: new_score(entry))
+      LeaderboardEntryScore.create!(score: score, entry: entry)
     end
   end
 
   private
 
   attr_reader :leaderboard, :username, :score
+
+  def new_score(entry)
+    score.to_i + entry.score.to_i
+  end
 end
