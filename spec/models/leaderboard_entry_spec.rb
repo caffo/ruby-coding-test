@@ -12,7 +12,7 @@ RSpec.describe LeaderboardEntry, type: :model do
 
       expect(entries.first).to eq(['Rodrigo', 10])
       expect(entries.second).to eq(['Renan', 9])
-      expect(entries.third).to eq(['Paul', nil])
+      expect(entries.third).to eq(['Paul', 0])
     end
   end
 end

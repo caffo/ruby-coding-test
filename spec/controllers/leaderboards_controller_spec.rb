@@ -150,6 +150,12 @@ RSpec.describe LeaderboardsController, type: :controller do
         }.to change(LeaderboardEntry, :count).by(1)
       end
 
+      it 'creates a new leaderboarder entry score' do
+        expect {
+          post :add_score, params: { id: my_leaderboard.id, username: 'lala', score: 1 }
+        }.to change(LeaderboardEntry, :count).by(1)
+      end
+
       it 'returns success message' do
         post :add_score, params: { id: my_leaderboard.id, username: 'lala', score: 1 }
 
@@ -162,6 +168,12 @@ RSpec.describe LeaderboardsController, type: :controller do
         expect {
           post :add_score, params: { id: my_leaderboard.id, username: 'lala', score: '1m' }
         }.not_to change(LeaderboardEntry, :count)
+      end
+
+      it 'does not creates a new leaderboarder entry score' do
+        expect {
+          post :add_score, params: { id: my_leaderboard.id, username: 'lala', score: '1m' }
+        }.not_to change(LeaderboardEntryScore, :count)
       end
 
       it 'returns error message' do

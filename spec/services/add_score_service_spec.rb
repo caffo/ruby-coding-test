@@ -32,6 +32,12 @@ RSpec.describe AddScoreService do
             AddScoreService.new(leaderboard: my_leaderboard, params: existing_username_valid_params).call
           }.to change { renan.reload.score }.by(5)
         end
+
+        it 'add creates a new leaderboarder entry score' do
+          expect {
+            AddScoreService.new(leaderboard: my_leaderboard, params: existing_username_valid_params).call
+          }.to change { LeaderboardEntryScore.count }.by(1)
+        end
       end
 
       context 'new username' do
@@ -39,6 +45,12 @@ RSpec.describe AddScoreService do
           expect {
             AddScoreService.new(leaderboard: my_leaderboard, params: new_username_valid_params).call
           }.to change { LeaderboardEntry.count }.by(1)
+        end
+
+        it 'add creates a new leaderboarder entry score' do
+          expect {
+            AddScoreService.new(leaderboard: my_leaderboard, params: new_username_valid_params).call
+          }.to change { LeaderboardEntryScore.count }.by(1)
         end
       end
 
@@ -51,6 +63,12 @@ RSpec.describe AddScoreService do
             AddScoreService.new(leaderboard: my_leaderboard, params: existing_username_invalid_params).call
           }.not_to change { renan.reload.score }
         end
+
+        it 'does not creates a new leaderboarder entry score' do
+          expect {
+            AddScoreService.new(leaderboard: my_leaderboard, params: existing_username_invalid_params).call
+          }.not_to change { LeaderboardEntryScore.count }
+        end
       end
 
       context 'new username' do
@@ -58,6 +76,12 @@ RSpec.describe AddScoreService do
           expect {
             AddScoreService.new(leaderboard: my_leaderboard, params: new_username_invalid_params).call
           }.not_to change { LeaderboardEntry.count }
+        end
+
+        it 'does not creates a new leaderboarder entry score' do
+          expect {
+            AddScoreService.new(leaderboard: my_leaderboard, params: new_username_invalid_params).call
+          }.not_to change { LeaderboardEntryScore.count }
         end
       end
     end

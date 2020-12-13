@@ -10,15 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180328212903) do
+ActiveRecord::Schema.define(version: 20201213145906) do
 
   create_table "leaderboard_entries", force: :cascade do |t|
     t.integer "leaderboard_id"
     t.string "username"
-    t.integer "score"
+    t.integer "score", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["leaderboard_id"], name: "index_leaderboard_entries_on_leaderboard_id"
+  end
+
+  create_table "leaderboard_entry_scores", force: :cascade do |t|
+    t.integer "leaderboard_entry_id"
+    t.integer "score"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["leaderboard_entry_id"], name: "index_leaderboard_entry_scores_on_leaderboard_entry_id"
   end
 
   create_table "leaderboards", force: :cascade do |t|
