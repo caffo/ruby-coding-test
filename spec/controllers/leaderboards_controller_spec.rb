@@ -24,6 +24,8 @@ require 'rails_helper'
 # `rails-controller-testing` gem.
 
 RSpec.describe LeaderboardsController, type: :controller do
+  fixtures :leaderboards
+  fixtures :leaderboard_entries
 
   # This should return the minimal set of attributes required to create a valid
   # Leaderboard. As you add validations to Leaderboard, be sure to
@@ -40,6 +42,8 @@ RSpec.describe LeaderboardsController, type: :controller do
   # in order to pass any filters (e.g. authentication) defined in
   # LeaderboardsController. Be sure to keep this updated too.
   let(:valid_session) { {} }
+
+  let(:my_leaderboard) { leaderboards(:my_leaderboard) }
 
   describe "GET #index" do
     it "returns a success response" do
@@ -139,12 +143,32 @@ RSpec.describe LeaderboardsController, type: :controller do
   end
 
   describe 'POST #add_score' do
-    it 'adds score' do
-      leaderboard = Leaderboard.create! valid_attributes
+    context 'with valid params' do
+      it 'adds score' do
+        expect {
+          post :add_score, params: { id: my_leaderboard.id, username: 'lala', score: 1 }
+        }.to change(LeaderboardEntry, :count).by(1)
+      end
 
-      expect {
-        post :add_score, params: { id: leaderboard.id, username: 'lala', score: 1 }
-      }.to change(LeaderboardEntry, :count).by(1)
+      it 'returns success message' do
+        post :add_score, params: { id: my_leaderboard.id, username: 'lala', score: 1 }
+
+        expect(flash[:notice]).to eq('Score added')
+      end
+    end
+
+    context 'with invalid params' do
+      it 'does not adds score' do
+        expect {
+          post :add_score, params: { id: my_leaderboard.id, username: 'lala', score: '1m' }
+        }.not_to change(LeaderboardEntry, :count)
+      end
+
+      it 'returns error message' do
+        post :add_score, params: { id: my_leaderboard.id, username: 'lala', score: '1m' }
+
+        expect(flash[:error]).to eq('Problem while adding score')
+      end
     end
   end
 
