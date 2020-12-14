@@ -159,7 +159,7 @@ RSpec.describe LeaderboardsController, type: :controller do
       it 'returns success message' do
         post :add_score, params: { id: my_leaderboard.id, username: 'lala', score: 1 }
 
-        expect(flash[:notice]).to eq('Score added')
+        expect(flash[:notice]).to eq('Score added! Gained 0 position(s)!')
       end
     end
 

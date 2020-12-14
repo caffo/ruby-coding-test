@@ -47,8 +47,10 @@ class LeaderboardsController < ApplicationController
   end
 
   def add_score
-    notice = if AddScoreService.new(leaderboard: @leaderboard, params: params).call
-      redirect_to @leaderboard, notice: 'Score added'
+    result = AddScoreService.new(leaderboard: @leaderboard, params: params).call
+
+    notice = if result.success?
+      redirect_to @leaderboard, notice: "Score added! Gained #{result.positions_gained} position(s)!"
     else
       redirect_to @leaderboard, flash: { error: 'Problem while adding score' }
     end

@@ -4,9 +4,9 @@ class LeaderboardEntryScoresController < ApplicationController
   def destroy
     leaderboard = @leaderboard_entry_score.entry.leaderboard
 
-    RemoveScoreService.new(@leaderboard_entry_score).call
+    result = RemoveScoreService.new(@leaderboard_entry_score).call
 
-    redirect_to leaderboard, notice: 'Score was successfully removed.'
+    redirect_to leaderboard, notice: "Score was successfully removed. Lost #{result.positions_lost} position(s)."
   end
 
   private

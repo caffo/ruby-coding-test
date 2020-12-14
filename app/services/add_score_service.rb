@@ -10,13 +10,18 @@ class AddScoreService
   end
 
   def call
-    return false unless valid?
+    return OpenStruct.new(success?: false, errors: self.errors) unless valid?
+
+    positions = 0
 
     ActiveRecord::Base.transaction do
       entry = leaderboard.entries.find_or_create_by!(username: username)
+      positions = positions_gained(entry)
       entry.update!(score: new_score(entry))
       LeaderboardEntryScore.create!(score: score, entry: entry)
     end
+
+    OpenStruct.new(success?: true, positions_gained: positions)
   end
 
   private
@@ -25,5 +30,10 @@ class AddScoreService
 
   def new_score(entry)
     score.to_i + entry.score.to_i
+  end
+
+  def positions_gained(entry)
+    LeaderboardEntries::PositionsGainedQuery.new(leaderboard.entries)
+      .call(entry_id: entry.id, new_score: new_score(entry), old_score: entry.score)
   end
 end
